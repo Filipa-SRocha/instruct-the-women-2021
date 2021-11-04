@@ -11,7 +11,7 @@ import requests
 def version_exists(package_name, version):
     # TODO
     # Fazer requisição na API do PyPI para checar se a versão existe
-    response = requests.get(f'http://pypi.org/pypi/{package_name}/{version}/json')
+    response = requests.get(f'https://pypi.org/pypi/{package_name}/{version}/json')
     if (response.status_code == 200):
         return True
     return False
@@ -22,11 +22,14 @@ def latest_version(package_name):
     # Fazer requisição na API do PyPI para descobrir a última versão
     # de um pacote. Retornar None se o pacote não existir.
 
-    response = requests.get(f'http://pypi.org/pypi/{package_name}/json')
+    response = requests.get(f'https://pypi.org/pypi/{package_name}/json')
+
     if(response.status_code == 404):
         return None
-    data = response.json()
-    #retorna todas as versoes numa lista 
-    allReleases= data['releases'].keys()
     
-    return list(allReleases)[-1]
+    data = response.json()
+    
+    latest = data['info']['version']
+
+
+    return latest
